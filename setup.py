@@ -39,24 +39,19 @@ with open("readme.md", 'r') as f:
 
 setup(
     name='pystar',
-    version='1.0',
-    description='Reading of files with .star format',
+    version='0.1',
+    description='PyStar is  a class library for  data manipulation  provided in the STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
     author_email='iurii.kibalin@cea.fr',
     url = 'https://github.com/ikibalin/pystar',
     license          = 'MIT License',
-    keywords         = 'STAR',
+    keywords         = ['STAR', 'CIF'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],    
     packages=['pystar'],  #same as name
     install_requires=[
-    ] #external packages as dependencies
-    #scripts=[
-    #        'neupy',
-    #        'rhochi',
-    #        'mem',
-    #]
+    ] 
 )

@@ -3,7 +3,4 @@
 *.bkg
 *.json
 *.pyc
-rhochi/setup.dat
-todo.md
-mem
-rhochi.egg-info
+pystar.egg-info
