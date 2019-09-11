@@ -1,7 +1,7 @@
 # PyStar 
 ***
 
-[PyStar] is  a class library for  data manipulation  provided in the Self Defining Text Archival and Retrieval (STAR). The STAR syntax provides a way for simple, easy-to-comprehend, flexible and extensible data exchange ([Hall, 1991][Hall_1991], [Hall, 1994][Hall_1994]). The syntax permits most types of data items, data structures and data cells. The STAR format is the basis for the Crystallographic Information File (CIF), which is widely used in crystallography for data archiving and exchange.
+[PyStar] is  a class library for  data manipulation  provided in the Self Defining Text Archival and Retrieval (STAR). The STAR syntax provides a way for simple, easy-to-comprehend, flexible and extensible data exchange ([Hall 1991][Hall_1991], [Hall 1994][Hall_1994]). The syntax permits most types of data items, data structures and data cells. The STAR format is the basis for the Crystallographic Information File (CIF), which is widely used in crystallography for data archiving and exchange.
 
 
  Folder    |  Description
@@ -96,8 +96,6 @@ data_block.app_loop(loop)
 #### Correction ...
 
 ```python
-star_object["_cell_length_a"] = 8.3
-#or 
 star_object["_cell_length_a"].value = 8.3
 
 star_object["_cell_length_a"].comment = "comment line"
@@ -114,7 +112,7 @@ data_block.save("out.cif")
 
 ## The syntax of the STAR File
 
-In the section shorts extracts with small changes are reproduced from "International Tables for Crystallography, Volume G, Definition and Exchange of Crystallographic Data, Edited by Sydney Hall and Brian McMahon, First edition, published for the International Union of Crystallography by Springer 2005". A more rigorous description of the STAR File syntax is given in ([Hall, 1991][Hall_1991] and [Hall, 1994][Hall_1994]).
+A short extract with small changes is reproduced from "International Tables for Crystallography, Volume G, Definition and Exchange of Crystallographic Data, Edited by Sydney Hall and Brian McMahon, First edition, published for the International Union of Crystallography by Springer 2005" in the section. A more rigorous description of the STAR File syntax is given in ([Hall 1991][Hall_1991] and [Hall 1994][Hall_1994]).
 
 A STAR File is a sequential file containing lines of standard ASCII characters. A file may be divided into any number of discrete sets of unique data items. Sets may be in the form of data blocks, global blocks or save frames.
 

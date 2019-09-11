@@ -4,3 +4,7 @@
 *.json
 *.pyc
 pystar.egg-info
+_*
+conf.py
+make.bat
+Makefile
