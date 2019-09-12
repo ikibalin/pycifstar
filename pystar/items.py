@@ -172,3 +172,21 @@ class Items(object):
         print("***  Error ***")
         print(s_out)
 
+    def __add__(self, x):
+        if isinstance(x, Items):
+            l_items = [_ for _ in self.items]
+            l_items.extend([_ for _ in x.items])
+            res = Items(items = l_items)
+            if self.comment != "":
+                res.comment = self.__comment
+            if x.comment != "":
+                if res.comment != "":
+                    res.comment += "\n"+x.comment
+                else:
+                    res.comment = x.comment
+        else:
+            res = None
+            self._show_message("Sum operation is defined only for Items type")
+        return res
+    def __radd__(self, x):
+        return self+x

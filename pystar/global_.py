@@ -147,7 +147,7 @@ class Global(object):
         return res
 
     def __str__(self):
-        ls_out = ["data_{:} {:}\n".format(self.name, self.comment)]
+        ls_out = ["global_{:} {:}\n".format(self.name, self.comment)]
         ls_out.append("\n")
         if self.is_values:
             ls_out.append(str(self.items))
@@ -313,3 +313,50 @@ class Global(object):
                 self.datas = l_string_datas
 
         return True
+
+    def __add__(self, x):
+        if isinstance(x, Global):
+            res = Global()
+            if x.name != "":
+                res.name = x.name
+                res.comment = x.comment
+            else:
+                res.name = self.name
+                res.comment = self.comment
+            res.items = self.items
+            if x.items is not None:
+                if res.items is None:
+                    res.items = x.items 
+                else: 
+                    res.items = res.items + x.items
+            l_loops = [_ for _ in self.loops]
+            l_loops.extend([_ for _ in x.loops])
+            res.loops =  l_loops
+
+            l_name_1 = [_1.name for _1 in self.datas]
+            l_name_2 = [_1.name for _1 in x.datas]
+            l_name_12 = list(set(l_name_1+l_name_2))
+            l_res_data = []
+            for _1 in l_name_12:
+                if (_1 in l_name_1) & (_1 in l_name_2):
+                    ind_1 = l_name_1.index(_1)
+                    ind_2 = l_name_2.index(_1)
+                    res_data = self.datas[ind_1]+x.datas[ind_2]
+                elif (_1 in l_name_1):
+                    ind_1 = l_name_1.index(_1)
+                    res_data = self.datas[ind_1]
+                else:
+                    ind_2 = l_name_2.index(_1)
+                    res_data = x.datas[ind_2]
+                l_res_data.append(res_data)
+            res.datas = l_res_data
+        else:
+            res = None
+            self._show_message("Sum operation is defined only for Global type")
+        return res
+    def __radd__(self, x):
+        return self+x
+
+    def to_file(self, f_name):
+        with open(f_name, "w") as fid:
+            fid.write(str(self))

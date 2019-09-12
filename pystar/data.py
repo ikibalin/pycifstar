@@ -254,6 +254,33 @@ class Data(object):
             self.loops = l_string_loops
         return True
 
+    def __add__(self, x):
+        if isinstance(x, Data):
+            if self.name != x.name:
+                self._show_message("Data blocks should have the same name")
+                return None
+            res = Data()
+            res.name = self.name
+            res.comment = self.comment
+
+            res.items = self.items
+            if x.items is not None:
+                if res.items is None:
+                    res.items = x.items 
+                else: 
+                    res.items = res.items + x.items
+            l_loops = [_ for _ in self.loops]
+            l_loops.extend([_ for _ in x.loops])
+            res.loops =  l_loops
+        else:
+            res = None
+            self._show_message("Sum operation is defined only for Data type")
+        return res
+    def __radd__(self, x):
+        return self+x
+
+
+
 def delete_name_from_prefix(key_: str, s_name: str):
     str_1 = key_.strip().lower()
     if str_1.startswith(s_name.lower()):
@@ -263,3 +290,5 @@ def delete_name_from_prefix(key_: str, s_name: str):
     if not(str_1.startswith("_")):
         str_1 = "_"+str_1
     return str_1
+
+
