@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Copyright (c) 2018-2019 Iurii Kibalin   
-# https://github.com/ikibalin/pystar  
+# https://github.com/ikibalin/pycifstar  
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -15,7 +15,7 @@
 #   notice, this list of conditions and the following disclaimer in the
 #   documentation and/or other materials provided with the distribution.
 # 
-# * Neither the name "pystar" nor the names of its contributors may
+# * Neither the name "pycifstar" nor the names of its contributors may
 #   be used to endorse or promote products derived from this software
 #   without specific prior written permission.
 # 
@@ -38,19 +38,22 @@ with open("readme.rst", 'r') as f:
     long_description = f.read()
 
 setup(
-    name='pystar',
-    version='2019.09',
-    description='PyStar is  a class library for  data manipulation  provided in the STAR File.',
+    name='pycifstar',
+    version='0.2',
+    description='PyCifStar is  a class library for  data manipulation  provided in the CIF/STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
     author_email='yurikibalin@outlook.com',
-    url = 'https://github.com/ikibalin/pystar',
+    url = 'https://github.com/ikibalin/pycifstar',
     license          = 'MIT License',
     keywords         = ['STAR', 'CIF'],
     classifiers=[
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
         "Operating System :: OS Independent",
     ],    
     packages=find_packages(),  #same as name
-    install_requires='3.7'
+    install_requires=[]
 )

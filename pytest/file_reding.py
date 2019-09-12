@@ -1,9 +1,9 @@
-import pystar
+import pycifstar
 
 def test_answer():
     f_name = "./example_1.cif"
-    global_ = pystar.read_star_file(f_name)
-    global_ = pystar.read_file(f_name)
+    global_ = pycifstar.read_star_file(f_name)
+    global_ = pycifstar.read_file(f_name)
     item = global_["_cell_length_a"]
     assert item.name == "_cell_length_a"
     assert item.value == "8.56212()"
@@ -26,10 +26,10 @@ def test_answer():
     data = global_["Fe3O4"]
     assert data.name == "Fe3O4"
 
-    item = pystar.Item(name="_jh", value="sf", comment="jhklj")
-    loop = pystar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
+    item = pycifstar.Item(name="_jh", value="sf", comment="jhklj")
+    loop = pycifstar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
 
-    data_block = pystar.Data()
+    data_block = pycifstar.Data()
     data_block.add_item(item)
     data_block.add_loop(loop)
 

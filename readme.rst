@@ -1,18 +1,18 @@
-========
-PyStar
-========
+==========
+PyCifStar
+==========
 
-PyStar_ is  a class library for  data manipulation  provided in the Self Defining Text Archival and Retrieval (STAR). The STAR syntax provides a way for simple, easy-to-comprehend, flexible and extensible data exchange (Hall_1991_, Hall_1994_). The syntax permits most types of data items, data structures and data cells. The STAR format is the basis for the Crystallographic Information File (CIF), which is widely used in crystallography for data archiving and exchange.
+PyCifStar_ is  a class library for  data manipulation  provided in the Self Defining Text Archival and Retrieval (STAR). The STAR syntax provides a way for simple, easy-to-comprehend, flexible and extensible data exchange (Hall_1991_, Hall_1994_). The syntax permits most types of data items, data structures and data cells. The STAR format is the basis for the Crystallographic Information File (CIF), which is widely used in crystallography for data archiving and exchange.
 
-+---------+---------------+
-| Folder  |  Description  |
-+=========+===============+
-| PyStar  |    library    |
-+---------+---------------+
-| example |     examples  |
-+---------+---------------+
-| docs    | documentation |
-+---------+---------------+
++------------+---------------+
+| Folder     |  Description  |
++============+===============+
+| PyCifStar  |    library    |
++------------+---------------+
+| example    |     examples  |
++------------+---------------+
+| docs       | documentation |
++------------+---------------+
 
 Main Features
 -------------
@@ -20,15 +20,15 @@ Main Features
 - a simple data manipulation;
 - a manipulation with comment text;
  
-Installation of *PyStar*
-------------------------
+Installation of *PyCifStar*
+------------------------------
 
-[PyStar] is developed and tested using Python 3.7. They can be installed by:
+PyCifStar_ is developed and tested using Python 3.7. They can be installed by:
 
 >>> python -m pip install ...  # as root (in Windows OS)
 
 
-If you have downloaded a source tarball you can install [PyStar] by doing the following:
+If you have downloaded a source tarball you can install PyCifStar_ by doing the following:
 
 
 >>> python setup.py develop # as root
@@ -36,7 +36,7 @@ If you have downloaded a source tarball you can install [PyStar] by doing the fo
 And then just import a library in a python code:
 
 
->>> import pystar
+>>> import pycifstar
 
 Usage
 -------- 
@@ -46,13 +46,13 @@ Reading a STAR File to an object:
 
 
 
->>> import pystar
+>>> import pycifstar
 >>> f_name = "example.cif"
->>> star_object = pystar.read_star_file(f_name)
+>>> star_object = pycifstar.read_star_file(f_name)
 
 or 
 
->>> star_object = pystar.read_file(f_name)
+>>> star_object = pycifstar.read_file(f_name)
 
 Access to ...
 ````````````````````````````````````
@@ -100,8 +100,8 @@ Creation ...
 '''''''''''''''''''
 
 
->>> item = pystar.Item(name="_jh", value="sf", comment="jhklj")
->>> loop = pystar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
+>>> item = pycifstar.Item(name="_jh", value="sf", comment="jhklj")
+>>> loop = pycifstar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
 
 >>> data_block = pystal.DataBlock()
 >>> data_block.app_item(item)
@@ -272,7 +272,7 @@ The ```stop_``` construction can be applied in the looped list of data names to 
 Collaboration
 ----------------------
 
-If you have any suggestions, bug reports or annoyances please report them to our issue tracker at PyStar_.
+If you have any suggestions, bug reports or annoyances please report them to our issue tracker at PyCifStar_.
 
 Copyright and License
 -------------------------
@@ -280,7 +280,7 @@ Copyright and License
 MIT License
 
 Copyright (c) 2018-2019 Iurii Kibalin   
-https://github.com/ikibalin/PyStar
+https://github.com/ikibalin/PyCifStar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -300,6 +300,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-.. _PyStar: https://github.com/ikibalin/PyStar "GitHub link on PyStar"
+.. _PyCifStar: https://github.com/ikibalin/PyCifStar "GitHub link on PyCifStar"
 .. _Hall_1991: https://pubs.acs.org/doi/pdf/10.1021/ci00002a020 "The STAR File: A New Fomat for Electronic Data Transfer and Archiving, J. Chem. Inf. Comput. Sci.1991312326-333"
 .. _Hall_1994: https://pubs.acs.org/doi/pdf/10.1021/ci00019a005 "The STAR File: detailed specifications, J. Chem. Inf. Comput. Sci.1994343505-508"
