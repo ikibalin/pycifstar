@@ -3,10 +3,10 @@ global_filerhochi                         # object RcifModel - Fitable
 _file_name_output_listing full.lis
 
 data_Fe3O4                                # object Crystal - Fitable
-_cell_angle_alpha 90.0                    # object Cell - Fitable
+_cell_angle_alpha 90.0                    
 _cell_angle_beta 90.0
 _cell_angle_gamma 90.0
-_cell_length_a 8.56212()
+_cell_length_a 8.56212()                   # object Cell - Fitable
 _cell_length_b 8.56212
 _cell_length_c 8.56212
 

@@ -1,117 +1,116 @@
 """
-transform information from data block of cif file to class CIFdata
+transform information from data block of cif file to class Data
 """
 __author__="ikibalin"
 __version__="28/08/2019"
 
-from .cl_CIFvalue import str_to_comment
-from .cl_CIFvalues import CIFvalues
-from .cl_CIFvalue import CIFvalue
-from .cl_CIFloop import CIFloop, find_name_comment_in_block
+from .item import str_to_comment, Item
+from .items import Items
+from .loop import Loop, find_name_comment_in_block
 
 
-class CIFdata(object):
+class Data(object):
     """
-    container for objects CIFvalues and list of CIFloop
+    container for objects Items and list of Loop
     """
 
-    def __init__(self, name="", values=None, loops=[], comment=""):
-        self.__cif_data_name = None
-        self.__cif_data_comment = None
-        self.__cif_values = None
-        self.__cif_loops = None
+    def __init__(self, name="", items=None, loops=[], comment=""):
+        self.__name = None
+        self.__comment = None
+        self.__items = None
+        self.__loops = None
         self.name = name
         self.comment = comment
-        self.values = values
+        self.items = items
         self.loops = loops
 
     @property    
     def name(self):
-        return self.__cif_data_name
+        return self.__name
     @name.setter
     def name(self, x):
         if x is not None:
             name = str(x).strip()
         else:
             name = ""
-        self.__cif_data_name = name
+        self.__name = name
     @property    
     def comment(self):
-        return self.__cif_data_comment
+        return self.__comment
     @comment.setter
     def comment(self, x):
         comment = str_to_comment(x)
-        self.__cif_data_comment = comment
+        self.__comment = comment
     @property    
     def comments(self):
-        return self.values.comment
+        return self.items.comment
 
     @property    
-    def values(self):
-        return self.__cif_values
-    @values.setter
-    def values(self, x):
-        if isinstance(x, CIFvalues):
+    def items(self):
+        return self.__items
+    @items.setter
+    def items(self, x):
+        if isinstance(x, Items):
             res = x
         elif isinstance(x, str):
-            cif_values = CIFvalues()
+            cif_values = Items()
             flag = cif_values.take_from_string(x)
             if flag:
                 res = cif_values
             else:
-                self._show_message("Can not convert string to object 'CIFvalues'")
+                self._show_message("Can not convert string to object 'Items'")
                 res = None
         elif x is None:
             res = None
         else:
             try:
-                flag_1 = isinstance(x[0], CIFvalue)
+                flag_1 = isinstance(x[0], Item)
                 flag_2 = isinstance(x[0], str)
             except:
                 flag_1, flag_2 = False, False
-            cif_values = CIFvalues()
+            cif_values = Items()
             if flag_1:
-                cif_values.values = x
+                cif_values.items = x
                 res = cif_values
             elif flag_2:
                 try:
-                    cif_values.values = "\n".join(x)
+                    cif_values.items = "\n".join(x)
                     res = cif_values
                 except:
-                    self._show_message("Can not convert list of strings to object 'CIFvalues'")
+                    self._show_message("Can not convert list of strings to object 'Items'")
                     res = None
             else:
-                self._show_message("Can not define the type of input data to convert it to object 'CIFvalues'")
+                self._show_message("Can not define the type of input data to convert it to object 'Items'")
                 res = None
-        self.__cif_values = res
+        self.__items = res
 
     @property    
     def loops(self):
-        return self.__cif_loops
+        return tuple(self.__loops)
     @loops.setter
     def loops(self, l_x):
-        if isinstance(l_x, CIFloop):
+        if isinstance(l_x, Loop):
             l_x_in = [l_x]
         elif isinstance(l_x, str):
             l_x_in = [l_x]
         l_cif_loop = []
         for x in l_x:
-            if isinstance(x, CIFloop):
+            if isinstance(x, Loop):
                 l_cif_loop.append(x)
             elif isinstance(x, str):
-                cif_loop = CIFloop()
+                cif_loop = Loop()
                 flag_out = cif_loop.take_from_string(x)
                 if flag_out:
                     l_cif_loop.append(cif_loop)
                 else:
-                    self._show_message("Can not convert list of strings to object 'CIFloop'")
+                    self._show_message("Can not convert list of strings to object 'Loop'")
             else:
-                self._show_message("Can not define the type of input data to convert it to object 'CIFloop'")
-        self.__cif_loops = l_cif_loop
+                self._show_message("Can not define the type of input data to convert it to object 'Loop'")
+        self.__loops = l_cif_loop
 
     @property
     def is_values(self):
-        return (self.values is not None)
+        return (self.items is not None)
 
     
     def is_value(self, key_):
@@ -119,7 +118,7 @@ class CIFdata(object):
 
         flag_1 = False
         if self.is_values:
-            flag_1 = self.values.is_value(str_1)
+            flag_1 = self.items.is_value(str_1)
         if flag_1:
             return flag_1
         for cif_loop in self.loops:
@@ -133,7 +132,7 @@ class CIFdata(object):
 
         flag_1 = False
         if self.is_values:
-            flag_1 = self.values.is_prefix(str_1)
+            flag_1 = self.items.is_prefix(str_1)
         if flag_1:
             return flag_1
         for cif_loop in self.loops:
@@ -142,6 +141,24 @@ class CIFdata(object):
                 return flag_1
         return flag_1
 
+    def add_item(self, x):
+        if self.items is None:
+            self.items = Items(items=[x])
+        else:
+            self.items.add_item(x)
+
+    def add_loop(self, x):
+        if isinstance(x, Loop):
+            x_in = [x]
+        elif isinstance(x, str):
+            _1 = Loop()
+            flag = _1.take_from_string(x)
+            if flag:
+                x_in = [_1]
+        else:
+            x_in = []
+            self._show_message("Introduced object was not identified as a loop")
+        self.__loops.extend(x_in)
 
     def __repr__(self):
         res = str(self)
@@ -151,7 +168,7 @@ class CIFdata(object):
         ls_out = ["data_{:} {:}\n".format(self.name, self.comment)]
         ls_out.append("\n")
         if self.is_values:
-            ls_out.append(str(self.values))
+            ls_out.append(str(self.items))
         for cif_loop in self.loops:
             ls_out.append("\n\n")
             ls_out.append(str(cif_loop))
@@ -164,13 +181,13 @@ class CIFdata(object):
     def __getitem__(self, key_):
         str_1 = delete_name_from_prefix(key_, self.name)
 
-        flag_1 = self.values.is_value(str_1)
-        flag_2 = self.values.is_prefix(str_1)
+        flag_1 = self.items.is_value(str_1)
+        flag_2 = self.items.is_prefix(str_1)
         res = None
         if flag_1:
-            res = self.values[str_1]
+            res = self.items[str_1]
         elif flag_2:
-            res = self.values.values_with_prefix(str_1)
+            res = self.items.items_with_prefix(str_1)
         else:
             for cif_loop in self.loops:
                 flag_1 = cif_loop.is_value(str_1)
@@ -230,7 +247,7 @@ class CIFdata(object):
                     l_string_loop.append(str_1)
                 else:
                     l_string_values.append(str_1)
-        self.values = "\n".join(l_string_values)
+        self.items = "\n".join(l_string_values)
         if l_string_loop != []:
             l_string_loops.append("\n".join(l_string_loop))
         if l_string_loops != []:

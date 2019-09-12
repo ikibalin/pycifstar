@@ -1,46 +1,51 @@
-from .cl_CIFvalue import CIFvalue
-from .cl_CIFvalues import CIFvalues
-from .cl_CIFloop import CIFloop
-from .cl_CIFdata import CIFdata
-from .cl_CIFglobal import CIFglobal
+from .item import Item
+from .items import Items
+from .loop import Loop
+from .data import Data
+from .global_ import Global
 
+def read_star_file(f_name):
+    return to_global(f_name)
+
+def read_file(f_name):
+    return to_global(f_name)
 
 def to_global(f_name):
     fid = open(f_name, "r")
     string = fid.read()
     fid.close()
-    cif_global = CIFglobal()
-    flag = cif_global.take_from_string(string)
+    global_ = Global()
+    flag = global_.take_from_string(string)
     if not flag:
         print("Error at file reading")
-    return cif_global
+    return global_
 
 def to_data(f_name):
     fid = open(f_name, "r")
     string = fid.read()
     fid.close()
-    cif_data = CIFdata()
-    flag = cif_data.take_from_string(string)
+    data = Data()
+    flag = data.take_from_string(string)
     if not flag:
         print("Error at file reading")
-    return cif_data
+    return data
 
 def to_loop(f_name):
     fid = open(f_name, "r")
     string = fid.read()
     fid.close()
-    cif_loop = CIFloop()
-    flag = cif_loop.take_from_string(string)
+    loop = Loop()
+    flag = loop.take_from_string(string)
     if not flag:
         print("Error at file reading")
-    return cif_loop
+    return loop
 
 def to_values(f_name):
     fid = open(f_name, "r")
     string = fid.read()
     fid.close()
-    cif_values = CIFvalues()
-    flag = cif_values.take_from_string(string)
+    items = Items()
+    flag = items.take_from_string(string)
     if not flag:
         print("Error at file reading")
-    return cif_values
+    return items

@@ -1,27 +1,27 @@
 """
-container of CIFvalue
+container of Item
 """
 __author__="ikibalin"
-__version__="28/08/2019"
+__version__="2019/09/12"
 
-from .cl_CIFvalue import CIFvalue, str_to_comment
+from .item import Item, str_to_comment
 
-class CIFvalues(object):
+class Items(object):
     """
-    container for objects CIFvalue
+    container for objects Item
     """
 
-    def __init__(self, values=[], comment=""):
-        self.__cif_values = None
+    def __init__(self, items=[], comment=""):
+        self.__items = None
         self.__comment = None
         self.comment = comment
-        self.values = values
+        self.items = items
 
     @property    
-    def values(self):
-        return self.__cif_values
-    @values.setter
-    def values(self, l_x):
+    def items(self):
+        return tuple(self.__items)
+    @items.setter
+    def items(self, l_x):
         l_res = []
         try:
             if isinstance(l_x, str):
@@ -32,14 +32,14 @@ class CIFvalues(object):
         except:
             l_x_in = [l_x]
         for x in l_x_in:
-            if isinstance(x, CIFvalue):
+            if isinstance(x, Item):
                 l_res.append(x)
             else:
-                cif_value = CIFvalue()
-                flag_out = cif_value.take_from_string(str(x))
+                item = Item()
+                flag_out = item.take_from_string(str(x))
                 if flag_out:
-                    l_res.append(cif_value)
-        self.__cif_values = l_res
+                    l_res.append(item)
+        self.__items = l_res
     @property    
     def comment(self):
         return self.__comment
@@ -53,7 +53,7 @@ class CIFvalues(object):
 
     @property    
     def names(self):
-        return [hh.name for hh in self.values]
+        return tuple([hh.name for hh in self.items])
     def __repr__(self):
         res = str(self)
         return res
@@ -61,20 +61,20 @@ class CIFvalues(object):
     def __str__(self):
         if self.is_defined:
             ls_out = [self.comment]
-            ls_out.extend([str(cif_value) for cif_value in self.values])
+            ls_out.extend([str(item) for item in self.items])
             return "\n".join(ls_out)
-        return "The object 'CIFvalues' is not defined"
+        return "The object 'Items' is not defined"
 
     @property
     def is_defined(self):
-        cond = (self.values is not None)
+        cond = (self.items is not None)
         return cond
 
     def is_value(self, key_):
         str_1 = key_.strip().lower()
         if not(str_1.startswith("_")):
             str_1 = "_"+str_1
-        l_name = [hh.name for hh in self.values]
+        l_name = [hh.name for hh in self.items]
         cond = (str_1 in l_name)
         return cond
 
@@ -82,40 +82,58 @@ class CIFvalues(object):
         str_1 = key_.strip().lower()
         if not(str_1.startswith("_")):
             str_1 = "_"+str_1
-        l_res = self.values_with_prefix(str_1)
+        l_res = self.items_with_prefix(str_1)
         cond = (len(l_res) > 0)
         return cond
 
+    def add_item(self, x):
+        if isinstance(x, Item):
+            x_in = [x]
+        elif isinstance(x, str):
+            _1 = Item()
+            flag = _1.take_from_string(x)
+            if flag:
+                x_in = [_1]
+        else:
+            x_in = []
+            self._show_message("Introduced object was not identified as an item")
+        self.__items.extend(x_in)
+
+    def __len__(self):
+        return len(self.items)
+
+    def __iter__(self):
+        return iter(self.items)
 
     def __getitem__(self, key_):
         res = None
         str_1 = key_.lower().strip()
         if not(str_1.startswith("_")):
             str_1 = "_"+str_1
-        for cif_value in self.values:
-            if cif_value.name == str_1:
-                res = cif_value
+        for item in self.items:
+            if item.name == str_1:
+                res = item
                 break
-        l_res = self.values_with_prefix(str_1)
+        l_res = self.items_with_prefix(str_1)
         if ((res is None) & (len(l_res) > 0)):
             res = l_res
         elif (res is None):
             self._show_message("Name '{:}' is not found".format(key_))
         return res
 
-    def values_with_prefix(self, s_type: str):
+    def items_with_prefix(self, s_type: str):
         str_1 = s_type.lower().strip()
         if not(str_1.startswith("_")):
             str_1 = "_"+str_1
-        l_res = []
+        l_res = Items(items=[])
         l_type = str_1.split("_")
         len_l_type = len(l_type)
-        for cif_value in self.values:
-            l_type_name = cif_value.name.split("_")
+        for item in self.items:
+            l_type_name = item.name.split("_")
             if len_l_type <= len(l_type_name):
                 flag = all([hh_1 == hh_2 for hh_1, hh_2 in zip(l_type, l_type_name[:len_l_type])])
                 if flag:
-                    l_res.append(cif_value)
+                    l_res.add_item(item)
         return l_res
 
     def take_from_string(self, string):
@@ -147,7 +165,7 @@ class CIFvalues(object):
         if s_val != []:
             l_value_string.append("\n".join(s_val))
         self.comment = "\n".join(l_comment)
-        self.values = l_value_string
+        self.items = l_value_string
         return True
 
     def _show_message(self, s_out: str):

@@ -1,27 +1,27 @@
 """
-transform information from one variable of .cif file to CIFvalue
+transform information from one variable of .cif file to Item
 """
 __author__="ikibalin"
-__version__="28/08/2019"
+__version__="2019/09/12"
 
 
 
-class CIFvalue(object):
+class Item(object):
     """
-    class to store one line from .cif
+    class to store one line from .star, .cif
     """
 
     def __init__(self, name=None, value=None, comment=""):
-        self.__cif_name = None
-        self.__cif_value = None
-        self.__cif_comment = None
+        self.__name = None
+        self.__value = None
+        self.__comment = None
         self.name = name
         self.value = value
         self.comment = comment
 
     @property    
     def name(self):
-        return self.__cif_name
+        return self.__name
     @name.setter
     def name(self, x):
         if x is not None:
@@ -30,23 +30,32 @@ class CIFvalue(object):
                 cif_name = "_"+cif_name
         else:
             cif_name = None
-        self.__cif_name = cif_name
+        self.__name = cif_name
+
+    @property    
+    def tag(self):
+        return self.name
+    @tag.setter
+    def tag(self, x):
+        self.name = x
+
+
     @property    
     def value(self):
-        return self.__cif_value
+        return self.__value
     @value.setter
     def value(self, x):
         if x is not None:
-            self.__cif_value = str(x).strip().strip("\"").strip("'")
+            self.__value = str(x).strip().strip("\"").strip("'")
         else:
-            self.__cif_value = None
+            self.__value = None
     @property    
     def comment(self):
-        return self.__cif_comment
+        return self.__comment
     @comment.setter
     def comment(self, x):
         comment = str_to_comment(x)
-        self.__cif_comment = comment
+        self.__comment = comment
     def __float__(self):
         return float(self.value)
 
@@ -70,7 +79,7 @@ class CIFvalue(object):
                 ls_out = ["{:} {:}".format(self.name, print_string(self.value))]
                 ls_out.append(" {:}".format(comment))
             return "".join(ls_out)
-        return "CIFvalue is not defined"
+        return "Item is not defined"
 
     @property
     def is_defined(self):
