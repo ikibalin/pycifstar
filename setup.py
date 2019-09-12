@@ -34,7 +34,7 @@
 
 from setuptools import setup, find_packages
 
-with open("readme.md", 'r') as f:
+with open("readme.rst", 'r') as f:
     long_description = f.read()
 
 setup(
@@ -43,7 +43,7 @@ setup(
     description='PyStar is  a class library for  data manipulation  provided in the STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
-    author_email='iurii.kibalin@cea.fr',
+    author_email='yurikibalin@outlook.com',
     url = 'https://github.com/ikibalin/pystar',
     license          = 'MIT License',
     keywords         = ['STAR', 'CIF'],
