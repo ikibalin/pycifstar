@@ -25,7 +25,7 @@ Installation of *PyCifStar*
 
 PyCifStar_ is developed and tested using Python 3.7. They can be installed by:
 
->>> python -m pip install ...  # as root (in Windows OS)
+>>> python -m pip install pycifstar  # as root (in Windows OS)
 
 
 If you have downloaded a source tarball you can install PyCifStar_ by doing the following:
