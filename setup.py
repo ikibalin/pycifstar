@@ -32,14 +32,14 @@
 # software, even if advised of the possibility of such damage.
 
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open("readme.md", 'r') as f:
     long_description = f.read()
 
 setup(
     name='pystar',
-    version='0.1',
+    version='2019.09',
     description='PyStar is  a class library for  data manipulation  provided in the STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
@@ -51,7 +51,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],    
-    packages=['pystar'],  #same as name
-    install_requires=[
-    ] 
+    packages=find_packages(),  #same as name
+    install_requires='3.7'
 )

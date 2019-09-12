@@ -1,3 +1,5 @@
+name = "pystar"
+
 from .item import Item
 from .items import Items
 from .loop import Loop
