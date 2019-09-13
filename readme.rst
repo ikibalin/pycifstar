@@ -4,15 +4,15 @@ PyCifStar
 
 PyCifStar_ is  a class library for  data manipulation  provided in the Self Defining Text Archival and Retrieval (STAR). The STAR syntax provides a way for simple, easy-to-comprehend, flexible and extensible data exchange (Hall_1991_, Hall_1994_). The syntax permits most types of data items, data structures and data cells. The STAR format is the basis for the Crystallographic Information File (CIF), which is widely used in crystallography for data archiving and exchange.
 
-+------------+---------------+
-| Folder     |  Description  |
-+============+===============+
-| PyCifStar  |    library    |
-+------------+---------------+
-| example    |     examples  |
-+------------+---------------+
-| docs       | documentation |
-+------------+---------------+
++------------+--------------+
+| Folder     |  Description |
++============+==============+
+| PyCifStar  |    library   |
++------------+--------------+
+| example    |     examples |
++------------+--------------+
+| docs       | documentation|
++------------+--------------+
 
 Main Features
 -------------
@@ -39,18 +39,18 @@ And then just import a library in a python code:
 >>> import pycifstar
 
 Usage
--------- 
+--------
 
 Reading a STAR File to an object:
 ````````````````````````````````````
 
 
 
->>> import pycifstar
->>> f_name = "example.cif"
->>> star_object = pycifstar.read_star_file(f_name)
+    import pycifstar
+    f_name = "example.cif"
+    star_object = pycifstar.read_star_file(f_name)
 
-or 
+or
 
 >>> star_object = pycifstar.read_file(f_name)
 

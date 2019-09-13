@@ -34,12 +34,25 @@
 
 from setuptools import setup, find_packages
 
-with open("readme.rst", 'r') as f:
-    long_description = f.read()
+
+long_description = '''\
+PyCifStar is  a class library for  data manipulation  provided in 
+the Self Defining Text Archival and Retrieval (STAR). The STAR syntax 
+provides a way for simple, easy-to-comprehend, flexible and extensible 
+data exchange. 
+
+It is written in Python.
+
+For more details, please go to the `github`_.
+
+.. _`github`: https://github.com/ikibalin/pycifstar'''
+
+#with open("readme.rst", 'r') as f:
+#    long_description = f.read()
 
 setup(
     name='pycifstar',
-    version='0.2',
+    version='0.2.1',
     description='PyCifStar is  a class library for  data manipulation  provided in the CIF/STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
