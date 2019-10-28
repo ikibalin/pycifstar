@@ -123,14 +123,25 @@ class Global(object):
         elif isinstance(l_x, str):
             l_x_in = [l_x]
         l_cif_data = []
+        l_name = []
         for x in l_x:
             if isinstance(x, Data):
-                l_cif_data.append(x)
+                if x.name in l_name:
+                    _ind = l_name.index(x.name)
+                    l_cif_data[_ind] = l_cif_data[_ind] + x
+                else:
+                    l_name.append(x.name)
+                    l_cif_data.append(x)
             elif isinstance(x, str):
                 data = Data()
                 flag_out = data.take_from_string(x)
                 if flag_out:
-                    l_cif_data.append(data)
+                    if data.name in l_name:
+                        _ind = l_name.index(data.name)
+                        l_cif_data[_ind] = l_cif_data[_ind] + data
+                    else:
+                        l_name.append(data.name)
+                        l_cif_data.append(data)
                 else:
                     self._show_message("Can not convert list of strings to object 'Data'")
             else:

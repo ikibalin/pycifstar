@@ -95,6 +95,7 @@ _pd_file_name_bkgr full.bkg               # object PdFileName - Fitable
 _pd_file_name_input full.dat
 _pd_file_name_output full.out
 
+data_pnd                                  # object PdExperimentPowder1D - Fitable
 _pd_reflex_asymmetry_p1 0.0               # object PdReflexAsymmetry - Fitable
 _pd_reflex_asymmetry_p2 0.0
 _pd_reflex_asymmetry_p3 0.0
