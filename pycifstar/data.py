@@ -4,6 +4,8 @@ transform information from data block of cif file to class Data
 __author__="ikibalin"
 __version__="28/08/2019"
 
+import os
+import os.path
 from .item import str_to_comment, Item
 from .items import Items
 from .loop import Loop, find_name_comment_in_block
@@ -202,11 +204,26 @@ class Data(object):
             self._show_message("Item is not found")
         return res
 
-    def take_from_string(self, string):
+    def take_from_string(self, string, f_dir=os.getcwd()):
         if isinstance(string, str):
-            l_string = string.split("\n")
+            l_string_ = string.split("\n")
         else:
-            l_string = string
+            l_string_ = string
+        l_string = []
+        for _string in l_string_:
+            if _string.strip().startswith("_add_url"):
+                _1 = Item()
+                _1.take_from_string(_string)
+                f_name = _1.value
+                f_full = os.path.join(f_dir, f_name)
+                if os.path.isfile(f_full):
+                    with open(os.path.join(f_dir, f_name), "r") as fid:
+                        ls_file = fid.readlines()
+                        l_string.extend(ls_file)
+                else:
+                    print(f"File {f_full:} is not found")
+            else:
+                l_string.append(_string)
 
         name, comment, i_data = find_name_comment_in_block(l_string, "data_")
         self.name = name
