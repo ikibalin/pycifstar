@@ -3,8 +3,7 @@
 *.bkg
 *.json
 *.pyc
-pystar.egg-info
-_*
+pycifstar.egg-info
 conf.py
 make.bat
 Makefile
