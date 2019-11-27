@@ -19,7 +19,7 @@ Main Features
 
 - a simple data manipulation;
 - a manipulation with comment text;
- 
+
 Installation of *PyCifStar*
 ------------------------------
 
@@ -77,7 +77,7 @@ if data block is not unique
 >>> print(items.names, items.values, items.comments)
 
 ... one-level loop by loop's prefix
-'''''''''''''''''''''''''''''''''''' 
+''''''''''''''''''''''''''''''''''''
 
 
 >>> loop = star_object["_atom_site"]
@@ -100,19 +100,26 @@ Creation ...
 '''''''''''''''''''
 
 
->>> item = pycifstar.Item(name="_jh", value="sf", comment="jhklj")
->>> loop = pycifstar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
+>>> item = pycifstar.Item(name="_cell_length_a", value="8.55", comment="Unit cell paremeter")
+>>> loop = pycifstar.Loop(
+      names=("_atom_site_label", "_atom_site_fract_x"),
+      values=(
+        ("Fe3A", "0.125"),
+        ("Fe3B", "0.5"),
+        ("O1", "0.25521")
+      )
+    )
 
->>> data_block = pystal.DataBlock()
->>> data_block.app_item(item)
->>> data_block.app_loop(loop)
+>>> data_block = pycifstar.Data()
+>>> data_block.add_item(item)
+>>> data_block.add_loop(loop)
 
 Correction ...
 '''''''''''''''''''''''''''''''''
 
 
->>> star_object["_cell_length_a"].value = 8.3
->>> star_object["_cell_length_a"].comment = "comment line"
+>>> data_block["_cell_length_a"].value = 8.3
+>>> data_block["_cell_length_a"].comment = "comment line"
 
 Saving ...
 '''''''''''''''''''''''''''''''''
@@ -137,7 +144,7 @@ A data item is a data value and its associated data name. Each data item stored 
 
 
 >>> _publication_author_name  "Patrick O’Connor"
->>> _publication_author_address  
+>>> _publication_author_address
 >>> ; School of CSSE
 >>> UWA
 >>> ;
@@ -147,7 +154,7 @@ Loop
 
 A looped list consists of the keyword ```loop_``` followed by
 
-- a sequence of data names (possibly with nested ```loop_``` constructs); 
+- a sequence of data names (possibly with nested ```loop_``` constructs);
 - a sequence of loop packets, each containing data values which are identified in the same order as the data names.
 
 A looped list specifies a table of data in which the data names represent the ‘header descriptors’ for columns of data and the packets represent the rows in the table. Looped lists may be nested to any level. Each loop level is initialized with the ```loop_``` keyword and is followed by the names of data items in this level. Data values that follow the nested data declarations must be in exact multiples of the number of data names. Each loop level must be terminated with a ```stop_```, except the outermost (level 1) which is terminated by either a new data item or the privileged strings indicating a save frame, a data block, a global block or an end of file The attributes of data sets are as follows.
@@ -157,9 +164,9 @@ An example of a simple one-level loop structure is:
 
 >>> loop_
 >>> _atom_identity_number
->>> _atom_type_symbol 
->>> 1 C 
->>> 2 C 
+>>> _atom_type_symbol
+>>> 1 C
+>>> 2 C
 >>> 3 O
 
 Nested (multi-level) looped lists contain matching data packets and an additional ```stop_``` to terminate each level of data. Here is a simple example of a two-level nested list.
@@ -192,16 +199,16 @@ A save frame has the following attributes:
 
 
 >>> data_example
->>> 
+>>>
 >>> save_phenyl
 >>> _object_class   molecular_fragment
->>> 
+>>>
 >>> loop_
 >>> _atom_identity_node
->>> _atom_identity_symbol 
+>>> _atom_identity_symbol
 >>>  1 C 2 C 3 C 4 C 5 C 6 C
 >>> save_
->>> 
+>>>
 >>> loop_ _molecular_fragments $ethyl $phenyl $methyl
 
 
@@ -249,7 +256,7 @@ Privileged constructs
 
 The following constructs are privileged.
 
-- Text strings starting with the character sequences ```data_```, ```loop_```, ```global_```, ```save_``` or ```stop_``` are privileged words (keywords) and may not be used as values in text strings. 
+- Text strings starting with the character sequences ```data_```, ```loop_```, ```global_```, ```save_``` or ```stop_``` are privileged words (keywords) and may not be used as values in text strings.
 - A sharp character "#" (ASCII 35) is an explicit end-of-line signal provided it is not contained within a text string. Characters on the same line and following an active sharp character are considered as comment text.
 
 Using ```stop_``` in looped lists
@@ -279,7 +286,7 @@ Copyright and License
 
 MIT License
 
-Copyright (c) 2018-2019 Iurii Kibalin   
+Copyright (c) 2018-2019 Iurii Kibalin
 https://github.com/ikibalin/PyCifStar
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -300,6 +307,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-.. _PyCifStar: https://github.com/ikibalin/PyCifStar "GitHub link on PyCifStar"
-.. _Hall_1991: https://pubs.acs.org/doi/pdf/10.1021/ci00002a020 "The STAR File: A New Fomat for Electronic Data Transfer and Archiving, J. Chem. Inf. Comput. Sci.1991312326-333"
-.. _Hall_1994: https://pubs.acs.org/doi/pdf/10.1021/ci00019a005 "The STAR File: detailed specifications, J. Chem. Inf. Comput. Sci.1994343505-508"
+.. _PyCifStar: https://github.com/ikibalin/PyCifStar
+.. _Hall_1991: https://pubs.acs.org/doi/pdf/10.1021/ci00002a020
+.. _Hall_1994: https://pubs.acs.org/doi/pdf/10.1021/ci00019a005
