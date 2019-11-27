@@ -300,6 +300,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-.. _PyCifStar: https://github.com/ikibalin/PyCifStar
-.. _Hall_1991: https://pubs.acs.org/doi/pdf/10.1021/ci00002a020
-.. _Hall_1994: https://pubs.acs.org/doi/pdf/10.1021/ci00019a005
+.. _PyCifStar: https://github.com/ikibalin/PyCifStar "GitHub link on PyCifStar"
+.. _Hall_1991: https://pubs.acs.org/doi/pdf/10.1021/ci00002a020 "The STAR File: A New Fomat for Electronic Data Transfer and Archiving, J. Chem. Inf. Comput. Sci.1991312326-333"
+.. _Hall_1994: https://pubs.acs.org/doi/pdf/10.1021/ci00019a005 "The STAR File: detailed specifications, J. Chem. Inf. Comput. Sci.1994343505-508"
