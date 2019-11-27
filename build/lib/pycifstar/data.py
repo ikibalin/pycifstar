@@ -247,7 +247,7 @@ class Data(object):
             elif cond_3:
                 if l_string_loop != []:
                     l_string_loops.append("\n".join(l_string_loop))
-                    l_string_loop = []
+                l_string_loop = [str_1]
                 flag_loop_read_name = True
                 flag_loop_read_array = False
             elif (cond_4 | cond_5):

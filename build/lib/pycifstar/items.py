@@ -126,10 +126,10 @@ class Items(object):
         if not(str_1.startswith("_")):
             str_1 = "_"+str_1
         l_res = Items(items=[])
-        l_type = str_1.split("_")
+        l_type = str_1.replace(".", "_").split("_")
         len_l_type = len(l_type)
         for item in self.items:
-            l_type_name = item.name.split("_")
+            l_type_name = item.name.replace(".", "_").split("_")
             if len_l_type <= len(l_type_name):
                 flag = all([hh_1 == hh_2 for hh_1, hh_2 in zip(l_type, l_type_name[:len_l_type])])
                 if flag:

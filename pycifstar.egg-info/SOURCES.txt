@@ -9,3 +9,4 @@ pycifstar.egg-info/PKG-INFO
 pycifstar.egg-info/SOURCES.txt
 pycifstar.egg-info/dependency_links.txt
 pycifstar.egg-info/top_level.txt
+test/test_file_reding.py

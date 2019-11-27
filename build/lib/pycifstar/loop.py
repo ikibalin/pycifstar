@@ -211,13 +211,13 @@ class Loop(object):
     def prefix(self):
         if self.is_defined:
             l_name = self.names
-            l_first_type = l_name[0].split("_")
+            l_first_type = l_name[0].replace(".", "_").split("_")
             if self.len_names == 1:
                 res = "_".join(l_first_type)
             else: #if more than 1
-                ind_smallest = len(l_name[0].split("_"))
+                ind_smallest = len(l_name[0].replace(".", "_").split("_"))
                 for name in l_name[1:]:
-                    l_type = name.split("_")
+                    l_type = name.replace(".", "_").split("_")
                     len_1 = min([len(l_first_type), len(l_type)])
                     l_help = [hh_1 == hh_2 for hh_1, hh_2 in zip(l_first_type[:len_1], l_type[:len_1])]
                     if False in l_help:
