@@ -52,7 +52,7 @@ For more details, please go to the `github`_.
 
 setup(
     name='pycifstar',
-    version='0.2.3',
+    version='0.2.4',
     description='PyCifStar is  a class library for  data manipulation  provided in the CIF/STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',

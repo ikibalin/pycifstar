@@ -1,7 +1,9 @@
+import os
+import os.path
 import pycifstar
 
 def test_answer():
-    f_name = "./example_1.cif"
+    f_name = os.path.join(os.path.dirname(__file__), "example_1.cif")
     global_ = pycifstar.read_star_file(f_name)
     global_ = pycifstar.read_file(f_name)
     item = global_["_cell_length_a"]
@@ -36,6 +38,23 @@ def test_answer():
     global_["_cell_length_a"].value = 8.3
     global_["_cell_length_a"].comment = "comment line"
     print(global_)
+    
+def test_answer_2():
+    f_name = os.path.join(os.path.dirname(__file__), "example_2.cif")
+    global_ = pycifstar.read_star_file(f_name)
+    global_ = pycifstar.read_file(f_name)
+    items = global_["_cell"]
+
+    assert len(items) == 6
+    assert items.names == ("_cell.angle_alpha", "_cell.angle_beta", "_cell.angle_gamma",
+                           "_cell.length_a", "_cell.length_b", "_cell.length_c")
+    assert items["_cell.angle_alpha"].value == "90.0"
+
+    loop = global_["_atom_site"]
+    assert loop.names == ("_atom_site.adp_type", "_atom_site.b_iso_or_equiv", 
+        "_atom_site.fract_x", "_atom_site.fract_y", "_atom_site.fract_z", 
+        "_atom_site.label", "_atom_site.occupancy", "_atom_site.type_symbol")
+    assert loop["_atom_site.adp_type"] == ["uani", "uani", "uiso"]
     
 
 
