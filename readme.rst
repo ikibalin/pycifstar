@@ -100,19 +100,26 @@ Creation ...
 '''''''''''''''''''
 
 
->>> item = pycifstar.Item(name="_jh", value="sf", comment="jhklj")
->>> loop = pycifstar.Loop(names=("_jh_2", "_jh_zzz"), values=(("1", "2"), ("11", "22"), ("111", "222")))
+>>> item = pycifstar.Item(name="_cell_length_a", value="8.55", comment="Unit cell paremeter")
+>>> loop = pycifstar.Loop(
+      names=("_atom_site_label", "_atom_site_fract_x"), 
+      values=(
+        ("Fe3A", "0.125"), 
+        ("Fe3B", "0.5"), 
+        ("O1", "0.25521")
+      )
+    )
 
->>> data_block = pystal.DataBlock()
->>> data_block.app_item(item)
->>> data_block.app_loop(loop)
+>>> data_block = pycifstar.Data()
+>>> data_block.add_item(item)
+>>> data_block.add_loop(loop)
 
 Correction ...
 '''''''''''''''''''''''''''''''''
 
 
->>> star_object["_cell_length_a"].value = 8.3
->>> star_object["_cell_length_a"].comment = "comment line"
+>>> data_block["_cell_length_a"].value = 8.3
+>>> data_block["_cell_length_a"].comment = "comment line"
 
 Saving ...
 '''''''''''''''''''''''''''''''''
