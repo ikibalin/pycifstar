@@ -296,6 +296,9 @@ class Data(object):
     def __radd__(self, x):
         return self+x
 
+    def to_file(self, f_name):
+        with open(f_name, "w") as fid:
+            fid.write(str(self))
 
 
 def delete_name_from_prefix(key_: str, s_name: str):

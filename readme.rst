@@ -100,7 +100,7 @@ Creation ...
 '''''''''''''''''''
 
 
->>> item = pycifstar.Item(name="_cell_length_a", value="8.55", comment="Unit cell paremeter")
+>>> item = pycifstar.Item(name="_cell_length_a", value="8.55", comment="Unit cell parameter")
 >>> loop = pycifstar.Loop(
       names=("_atom_site_label", "_atom_site_fract_x"),
       values=(
@@ -125,9 +125,7 @@ Saving ...
 '''''''''''''''''''''''''''''''''
 
 
->>> data_block.save_to_star_file("out.cif")
-or
->>> data_block.save("out.cif")
+>>> data_block.to_file("out.cif")
 
 
 

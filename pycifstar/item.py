@@ -143,6 +143,9 @@ class Item(object):
         print("***  Error ***")
         print(s_out)
 
+    def to_file(self, f_name):
+        with open(f_name, "w") as fid:
+            fid.write(str(self))
 
 def print_string(str_1):
     str_2 = str_1.strip("\"").strip("'")

@@ -322,6 +322,9 @@ class Loop(object):
         self.values_comment = l_values_comment
         return True
 
+    def to_file(self, f_name):
+        with open(f_name, "w") as fid:
+            fid.write(str(self))
 
 
 def smart_split(line):

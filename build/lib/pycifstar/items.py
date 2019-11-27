@@ -190,3 +190,7 @@ class Items(object):
         return res
     def __radd__(self, x):
         return self+x
+
+    def to_file(self, f_name):
+        with open(f_name, "w") as fid:
+            fid.write(str(self))
