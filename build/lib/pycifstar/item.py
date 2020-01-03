@@ -149,7 +149,9 @@ class Item(object):
 
 def print_string(str_1):
     str_2 = str_1.strip("\"").strip("'")
-    if len(str_2.split()) > 1:
+    if str_2.find("\n") != -1:
+        res = "\n;\n{:}\n;".format(str_2)
+    elif len(str_2.split()) > 1:
         res = "'{:}'".format(str_2)
     else:
         res = "{:}".format(str_2)
