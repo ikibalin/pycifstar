@@ -136,6 +136,14 @@ class Items(object):
                     l_res.add_item(item)
         return l_res
 
+    def items_with_names(self, names: list):
+        l_res = Items(items=[])
+        for name in names:
+            if self.is_value(name):
+                item = self[name]
+                l_res.add_item(item)
+        return l_res
+
     def take_from_string(self, string):
         if isinstance(string, str):
             l_string_in = string.split("\n")

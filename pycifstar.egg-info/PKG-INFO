@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: pycifstar
-Version: 0.2.6
+Version: 0.2.7
 Summary: PyCifStar is  a class library for  data manipulation  provided in the CIF/STAR File.
 Home-page: https://github.com/ikibalin/pycifstar
 Author: Iurii Kibalin

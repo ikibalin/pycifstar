@@ -28,6 +28,7 @@ class Loop(object):
     @property    
     def name(self):
         return self.__name
+
     @name.setter
     def name(self, x):
         if x is not None:
@@ -35,16 +36,20 @@ class Loop(object):
         else:
             name = ""
         self.__name = name
+
     @property    
     def comment(self):
         return self.__comment
+
     @comment.setter
     def comment(self, x):
         comment = str_to_comment(x)
         self.__comment = comment
+
     @property    
     def values(self):
         return self.__cif_value_array
+
     @values.setter
     def values(self, ll_x):
         if ll_x is not None:
@@ -57,9 +62,11 @@ class Loop(object):
                 self.__cif_value_array = [[str(ll_x).strip()]]
         else:
             self.__cif_value_array = None
+
     @property    
     def table(self):
         return self.values
+
     @table.setter
     def table(self, ll_x):
         self.values= ll_x
@@ -68,6 +75,7 @@ class Loop(object):
     @property    
     def names(self):
         return self.__names if self.__names is None else tuple(self.__names)
+
     @names.setter
     def names(self, l_x):
         if l_x is not None:
@@ -78,9 +86,11 @@ class Loop(object):
         else:
             l_name = None
         self.__names = l_name
+
     @property    
     def values_comment(self):
         return self.__values_comment
+
     @values_comment.setter
     def values_comment(self, l_x):
         if l_x is not None:
@@ -99,6 +109,7 @@ class Loop(object):
     @property    
     def table_comment(self):
         return self.values_comment
+
     @table_comment.setter
     def table_comment(self, ll_x):
         self.values_comment= ll_x
@@ -106,6 +117,7 @@ class Loop(object):
     @property    
     def names_comment(self):
         return self.__names_comment
+
     @names_comment.setter
     def names_comment(self, l_x):
         if l_x is not None:
@@ -130,6 +142,7 @@ class Loop(object):
         else:
             res = len(self.__names)
         return res
+
     @property    
     def size_values(self):
         if self.values is None:
@@ -182,7 +195,8 @@ class Loop(object):
         if self.is_defined:
             ls_out = ["".join(l_line_1)]
             if self.len_names > 0:
-                ls_out.extend(["{:}  {:}".format(hh_1, hh_2) for hh_1, hh_2 in zip(self.names, self.names_comment)])
+                ls_out.extend(["{:}  {:}".format(hh_1, hh_2) for hh_1, hh_2 in
+                               zip(self.names, self.names_comment)])
                 ll_x = self.values
                 l_values_comment = self.values_comment
                 for l_x, comment in zip(ll_x, l_values_comment):
@@ -203,17 +217,19 @@ class Loop(object):
     def is_defined(self):
         cond = ((self.names is not None) & (self.values is not None))
         return cond
+
     @property
     def is_value_comment(self):
         cond = (self.values_comment is not None)
         return cond
+
     @property
     def prefix(self):
         if self.is_defined:
             l_name = self.names
             l_first_type = l_name[0].replace(".", "_").split("_")
             if self.len_names == 1:
-                res = "_".join(l_first_type)
+                res = "_".join(l_first_type[:-1])
             else: #if more than 1
                 ind_smallest = len(l_name[0].replace(".", "_").split("_"))
                 for name in l_name[1:]:
@@ -230,6 +246,7 @@ class Loop(object):
             self._show_message("Object is not defined")
             res = None
         return res
+
     def is_prefix(self, key_):
         str_1 = key_.strip().lower()
         prefix = self.prefix
@@ -298,24 +315,28 @@ class Loop(object):
         l_values, l_values_comment = [], []
         for i_line, line in enumerate(l_string[i_table:]):
             str_1 = line.strip()
-            cond = any([str_1.startswith(key_word) for key_word in ["loop_", "data_", "global_", "_", "#"]])
-            if (cond | (str_1 == '')):
-                break
-            ind_1 = str_1.find("#")
-            if ind_1 == -1:
-                comment = ""
-                line_value = str_1
+            if str_1.startswith("#"):
+                pass
             else:
-                comment = str_1[ind_1:]
-                line_value = str_1[:ind_1]
+                cond = any([str_1.startswith(key_word) for key_word in
+                            ["loop_", "data_", "global_", "_", "#"]])
+                if (cond | (str_1 == '')):
+                    break
+                ind_1 = str_1.find("#")
+                if ind_1 == -1:
+                    comment = ""
+                    line_value = str_1
+                else:
+                    comment = str_1[ind_1:]
+                    line_value = str_1[:ind_1]
+        
+                l_value = smart_split(line_value)
+                if len(l_value) < len_name:
+                    l_value.extend((len_name-len(l_value))*["."])
+        
+                l_values.append(l_value[:len_name])
+                l_values_comment.append(comment)
 
-            l_value = smart_split(line_value)
-            if len(l_value) < len_name:
-                l_value.extend((len_name-len(l_value))*["."])
-
-            l_values.append(l_value[:len_name])
-            l_values_comment.append(comment)
-                
         self.names = l_name
         self.names_comment = l_name_comment
         self.values = l_values

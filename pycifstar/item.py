@@ -147,15 +147,17 @@ class Item(object):
         with open(f_name, "w") as fid:
             fid.write(str(self))
 
+
 def print_string(str_1):
     str_2 = str_1.strip("\"").strip("'")
     if str_2.find("\n") != -1:
         res = "\n;\n{:}\n;".format(str_2)
-    elif len(str_2.split()) > 1:
+    elif ((len(str_2.split()) > 1) | str_2.startswith("_")):
         res = "'{:}'".format(str_2)
     else:
         res = "{:}".format(str_2)
     return res
+
 
 def str_to_comment(x):
     if x is not None:

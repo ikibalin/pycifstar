@@ -7,3 +7,7 @@ pycifstar.egg-info
 conf.py
 make.bat
 Makefile
+.spyproject/*
+pycifstar.egg-info/*
+build/*
+dist/*
