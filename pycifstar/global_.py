@@ -282,7 +282,8 @@ class Global(object):
         i_data = -1
         for i_line, line in enumerate(l_string[(i_global+1):]):
             str_1 = line.strip()
-            cond_1 = any([str_1.lower().startswith(key_word) for key_word in ["data_", "global_"]])
+            cond_1 = any([str_1.lower().startswith(key_word) for key_word in
+                          ["data_", "global_"]])
             cond_2 = (str_1 == "")
             cond_3 = str_1.lower().startswith("loop_")
             cond_4 = str_1.lower().startswith("_")

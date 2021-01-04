@@ -170,6 +170,10 @@ class Items(object):
                     s_val = [line.strip()]
             elif flag_in:
                 s_val.append(line.strip())
+            else:
+                if line.strip() != "":
+                    raise ValueError(f"There is a violation of the RCIF \
+format in the line:\n{line:}")
         if s_val != []:
             l_value_string.append("\n".join(s_val))
         self.comment = "\n".join(l_comment)
