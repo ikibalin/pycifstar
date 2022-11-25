@@ -295,7 +295,6 @@ class Loop(object):
         name, comment, i_loop = find_name_comment_in_block(l_string, "loop_")
         self.name = name
         self.comment = comment
-
         l_name, l_name_comment = [], []
         for i_line, line in enumerate(l_string[i_loop+1:]):
             str_1 = line.strip()
@@ -311,8 +310,8 @@ class Loop(object):
                 i_table = i_line+i_loop+1
                 break
         len_name = len(l_name)
-
         l_values, l_values_comment = [], []
+        l_value, comment = [], ""
         for i_line, line in enumerate(l_string[i_table:]):
             str_1 = line.strip()
             if str_1.startswith("#"):
@@ -324,18 +323,25 @@ class Loop(object):
                     break
                 ind_1 = str_1.find("#")
                 if ind_1 == -1:
-                    comment = ""
                     line_value = str_1
                 else:
-                    comment = str_1[ind_1:]
+                    comment += str_1[ind_1:]
                     line_value = str_1[:ind_1]
-        
-                l_value = smart_split(line_value)
-                if len(l_value) < len_name:
-                    l_value.extend((len_name-len(l_value))*["."])
-        
-                l_values.append(l_value[:len_name])
-                l_values_comment.append(comment)
+                
+                l_value.extend(smart_split(line_value))
+                if len(l_value) >= len_name:
+                    l_values.append(l_value[:len_name])
+                    l_values_comment.append(comment)
+                    comment = ""
+                    l_value = l_value[len_name:]
+
+        if len(l_value) > 0:
+            if len(l_value) < len_name:
+                l_value.extend((len_name-len(l_value))*["."])
+            l_values.append(l_value[:len_name])
+            l_values_comment.append(comment)
+            comment = ""
+            l_value = l_value[len_name:]
 
         self.names = l_name
         self.names_comment = l_name_comment
