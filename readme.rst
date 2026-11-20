@@ -279,6 +279,21 @@ Collaboration
 
 If you have any suggestions, bug reports or annoyances please report them to our issue tracker at PyCifStar_.
 
+Development
+-------------
+
+Tests (also run by GitHub Actions on every pull request, on Linux,
+Windows and macOS; a second job checks that CrysPy writes the same CIF
+text with the new pycifstar as with the one of ``master``):
+
+>>> python -m pip install -e .[test]
+>>> python -m pytest test
+
+Release: set ``version`` in ``setup.py``, merge into ``master``, then
+publish a GitHub release whose tag is that version (e.g. ``0.3.1``). The
+workflow ``publish-pypi.yml`` runs the tests, builds the package and
+publishes it to PyPI.
+
 Copyright and License
 -------------------------
 

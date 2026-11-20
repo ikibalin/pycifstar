@@ -15,6 +15,13 @@ CIF_TOKEN = re.compile(
 # a value written without quotes
 CIF_SIMPLE_VALUE = re.compile(r"""[^\s_#$'"\[\];][^\s]*""")
 CIF_RESERVED = ("data_", "loop_", "global_", "save_", "stop_")
+# a value that can be written as it is: not quoted, not ending with a quote
+# and not starting with a reserved word (in any case)
+CIF_PLAIN_VALUE = re.compile(
+    r"""(?!(?i:data_|loop_|global_|save_|stop_))[^\s_#$'"\[\];](?:\S*[^\s'"])?""")
+# a quote that closes a value: before a blank or at the end of the text
+CLOSING_SINGLE_QUOTE = re.compile(r"'(\s|$)")
+CLOSING_DOUBLE_QUOTE = re.compile(r'"(\s|$)')
 
 
 
@@ -164,6 +171,8 @@ def split_values_comment(line: str):
     of the line when there is none). A '#' inside a quoted value or inside
     a word is a part of the value.
     """
+    if "'" not in line and '"' not in line and "#" not in line:
+        return line.split(), "", len(line)  # the most frequent line: fast
     l_value = []
     for match in CIF_TOKEN.finditer(line):
         token = match.group(0)
@@ -180,6 +189,8 @@ def split_values_comment(line: str):
 
 
 def print_string(str_1):
+    if CIF_PLAIN_VALUE.fullmatch(str_1) is not None:
+        return str_1  # the most frequent value: fast
     str_2 = str_1.strip("\"").strip("'")
     if (CIF_SIMPLE_VALUE.fullmatch(str_2) is not None and
             not str_2.lower().startswith(CIF_RESERVED)):
@@ -188,14 +199,16 @@ def print_string(str_1):
         return "\n;\n{:}\n;".format(str_2)
     # a quote closes the value only before a blank: choose the one that
     # does not appear so in the text
-    if re.search(r"'(\s|$)", str_2) is None:
+    if CLOSING_SINGLE_QUOTE.search(str_2) is None:
         return "'{:}'".format(str_2)
-    if re.search(r'"(\s|$)', str_2) is None:
+    if CLOSING_DOUBLE_QUOTE.search(str_2) is None:
         return '"{:}"'.format(str_2)
     return "\n;\n{:}\n;".format(str_2)
 
 
 def str_to_comment(x):
+    if x == "":
+        return ""  # the most frequent comment: fast
     if x is not None:
         ind = str(x).find("#")
         if ind == -1:

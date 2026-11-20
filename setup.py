@@ -52,21 +52,22 @@ For more details, please go to the `github`_.
 
 setup(
     name='pycifstar',
-    version='0.3.0',
+    version='0.3.1',
     description='PyCifStar is  a class library for  data manipulation  provided in the CIF/STAR File.',
     long_description = long_description,
     author='Iurii Kibalin',
     author_email='yurikibalin@outlook.com',
     url = 'https://github.com/ikibalin/pycifstar',
     license          = 'MIT License',
+    long_description_content_type='text/x-rst',
     keywords         = ['STAR', 'CIF'],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-    ],    
-    packages=find_packages(),  #same as name
-    install_requires=[]
+    ],
+    packages=find_packages(include=["pycifstar", "pycifstar.*"]),
+    python_requires=">=3.7",
+    install_requires=[],
+    extras_require={"test": ["pytest"]},
 )

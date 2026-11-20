@@ -6,6 +6,9 @@ __version__="28/08/2019"
 
 from .item import print_string, split_values_comment, str_to_comment
 
+# the start of a line that ends the values of a loop
+LOOP_END = ("loop_", "data_", "global_", "_")
+
 class Loop(object):
     """
     class to store loop from .cif
@@ -199,10 +202,8 @@ class Loop(object):
                                zip(self.names, self.names_comment)])
                 ll_x = self.values
                 l_values_comment = self.values_comment
-                for l_x, comment in zip(ll_x, l_values_comment):
-                    l_line_1 = ["{:}".format(print_string(x)) for x in l_x]
-                    l_line_1.append(comment)
-                    ls_out.append(" ".join(l_line_1))
+                ls_out.extend([" ".join([*map(print_string, l_x), comment])
+                               for l_x, comment in zip(ll_x, l_values_comment)])
         return "\n".join(ls_out)
 
     def _show_message(self, s_out: str):
@@ -312,23 +313,29 @@ class Loop(object):
         len_name = len(l_name)
         l_values, l_values_comment = [], []
         l_value, comment = [], ""
-        for i_line, line in enumerate(l_string[i_table:]):
+        is_quoted = False  # values without quotes need no more cleaning
+        for line in l_string[i_table:]:
             str_1 = line.strip()
             if str_1.startswith("#"):
-                pass
-            else:
-                cond = any([str_1.startswith(key_word) for key_word in
-                            ["loop_", "data_", "global_", "_", "#"]])
-                if (cond | (str_1 == '')):
+                continue
+            if (str_1 == "") or str_1.startswith(LOOP_END):
+                break
+            if not is_quoted and ("'" in str_1 or '"' in str_1):
+                is_quoted = True
+            l_value_line, comment_line, _ = split_values_comment(str_1)
+            if not comment and len(l_value_line) == len_name and not l_value:
+                l_values.append(l_value_line)  # one row in one line: fast
+                l_values_comment.append(comment_line)
+                continue
+            comment += comment_line
+            l_value.extend(l_value_line)
+            while len(l_value) >= len_name:  # all rows of the line
+                l_values.append(l_value[:len_name])
+                l_values_comment.append(comment)
+                comment = ""
+                l_value = l_value[len_name:]
+                if len_name == 0:
                     break
-                l_value_line, comment_line, _ = split_values_comment(str_1)
-                comment += comment_line
-                l_value.extend(l_value_line)
-                if len(l_value) >= len_name:
-                    l_values.append(l_value[:len_name])
-                    l_values_comment.append(comment)
-                    comment = ""
-                    l_value = l_value[len_name:]
 
         if len(l_value) > 0:
             if len(l_value) < len_name:
@@ -340,7 +347,10 @@ class Loop(object):
 
         self.names = l_name
         self.names_comment = l_name_comment
-        self.values = l_values
+        if is_quoted:
+            self.values = l_values
+        else:  # the values are stripped words already: as the setter gives
+            self.__cif_value_array = l_values
         self.values_comment = l_values_comment
         return True
 
@@ -368,9 +378,12 @@ def find_name_comment_in_block(l_string, block_name):
     if not(block_name_l.endswith("_")):
         block_name_l = block_name_l + "_"
     len_bn = len(block_name_l)
-    l_help = [i_line for i_line, line in enumerate(l_string) if line.strip().lower().startswith(block_name_l)]
-    if len(l_help) > 0:
-        i_block = l_help[0]
+    i_block = -1
+    for i_line, line in enumerate(l_string):
+        if line.lstrip()[:len_bn].lower() == block_name_l:
+            i_block = i_line
+            break
+    if i_block != -1:
         str_1 = l_string[i_block].strip()
         ind_1= str_1.find(" ")
         if ((ind_1 != -1)):
@@ -380,7 +393,6 @@ def find_name_comment_in_block(l_string, block_name):
             name = str_1[len_bn:]
             comment = ""
     else:
-        i_block = -1
         name = ""
         comment = ""
     return name, comment, i_block

@@ -11,3 +11,6 @@ Makefile
 pycifstar.egg-info/*
 build/*
 dist/*
+__pycache__/
+.pytest_cache/
+*.egg-info/

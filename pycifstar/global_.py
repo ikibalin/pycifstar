@@ -282,12 +282,12 @@ class Global(object):
         i_data = -1
         for i_line, line in enumerate(l_string[(i_global+1):]):
             str_1 = line.strip()
-            cond_1 = any([str_1.lower().startswith(key_word) for key_word in
-                          ["data_", "global_"]])
+            start_1 = str_1[:7].lower()
+            cond_1 = start_1.startswith(("data_", "global_"))
             cond_2 = (str_1 == "")
-            cond_3 = str_1.lower().startswith("loop_")
-            cond_4 = str_1.lower().startswith("_")
-            cond_5 = str_1.lower().startswith("#")
+            cond_3 = start_1.startswith("loop_")
+            cond_4 = str_1.startswith("_")
+            cond_5 = str_1.startswith("#")
             if cond_1:
                 if str_1.lower().startswith("data_"):
                     i_data = i_line+i_global+1
@@ -325,8 +325,12 @@ class Global(object):
             l_string_datas, l_string_data = [], []
             for line in l_string[i_data:]:
                 str_1 = line.strip()
-                cond_1 = str_1.lower().startswith("global_")
-                cond_2 = str_1.lower().startswith("data_") 
+                if str_1[:1] in "dDgG":  # data_ or global_ may start here
+                    start_1 = str_1[:7].lower()
+                    cond_1 = start_1.startswith("global_")
+                    cond_2 = start_1.startswith("data_")
+                else:
+                    cond_1 = cond_2 = False
                 if cond_1:
                     break
                 elif cond_2:
