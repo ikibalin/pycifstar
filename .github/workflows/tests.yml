@@ -1,0 +1,91 @@
+# Run the tests on every push and pull request: on Linux with the oldest
+# and newest supported Python, on Windows and macOS; and check that
+# CrysPy (which reads its files by pycifstar) writes the same CIF text
+# as with pycifstar of the master branch.
+
+name: Tests
+
+on:
+  push:
+    branches-ignore: [master] # already verified in the PR
+    tags-ignore: ['*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.9', '3.11', '3.13', '3.14']
+        include:
+          - os: windows-latest
+            python-version: '3.13'
+          - os: macos-latest
+            python-version: '3.13'
+    name: tests-${{ matrix.os }}-py${{ matrix.python-version }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: python -m pip install .[test]
+
+      - name: Run tests
+        run: python -m pytest -v test
+
+  cryspy:
+    # CrysPy output with pycifstar of master (before) and of this branch
+    # (after) must be the same.
+    runs-on: ubuntu-latest
+    name: cryspy-output
+    env:
+      PYTHONHASHSEED: '0' # CrysPy writes some categories in set order
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check out CrysPy
+        uses: actions/checkout@v6
+        with:
+          repository: ikibalin/cryspy
+          ref: develop
+          path: cryspy-src
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install CrysPy
+        run: python -m pip install ./cryspy-src
+
+      - name: CrysPy output with pycifstar of master
+        run: |
+          git worktree add ../pycifstar-master origin/master
+          python -m pip install --force-reinstall --no-deps ../pycifstar-master
+          python .github/scripts/cryspy_to_cif.py cryspy-src ../before.json
+
+      - name: CrysPy output with pycifstar of this branch
+        run: |
+          python -m pip install --force-reinstall --no-deps .
+          python .github/scripts/cryspy_to_cif.py cryspy-src ../after.json
+
+      - name: Compare
+        run: python .github/scripts/compare_to_cif.py ../before.json ../after.json
