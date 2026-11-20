@@ -4,7 +4,7 @@ transform information from loop of cif file to class Loop
 __author__="ikibalin"
 __version__="28/08/2019"
 
-from .item import print_string, str_to_comment
+from .item import print_string, split_values_comment, str_to_comment
 
 class Loop(object):
     """
@@ -321,14 +321,9 @@ class Loop(object):
                             ["loop_", "data_", "global_", "_", "#"]])
                 if (cond | (str_1 == '')):
                     break
-                ind_1 = str_1.find("#")
-                if ind_1 == -1:
-                    line_value = str_1
-                else:
-                    comment += str_1[ind_1:]
-                    line_value = str_1[:ind_1]
-                
-                l_value.extend(smart_split(line_value))
+                l_value_line, comment_line, _ = split_values_comment(str_1)
+                comment += comment_line
+                l_value.extend(l_value_line)
                 if len(l_value) >= len_name:
                     l_values.append(l_value[:len_name])
                     l_values_comment.append(comment)
@@ -360,23 +355,12 @@ def smart_split(line):
     "C C 0.0033 0.0016 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4'"
     in the list like:
     ['C', 'C', '0.0033', '0.0016', 'International Tables Vol C Tables 4.2.6.8 and 6.1.1.4']
+
+    Blanks are spaces or tabs; a quote closes a value only before a blank
+    or the end of the line ("O'Brien" is one value); a comment ('#' at the
+    start of a value) is left out.
     """
-    flag_in = False
-    l_val, val = [], []
-    for hh in line.strip():
-        if (hh == " ") & (not flag_in):
-            if val != []:
-                l_val.append("".join(val))
-            val = []
-        elif (hh == " ") & (flag_in):
-            val.append(hh)
-        elif ((hh == "'")|(hh == "\"")):
-            flag_in = not flag_in
-        else:
-            val.append(hh)
-    if val != []:
-        l_val.append("".join(val))
-    return l_val
+    return split_values_comment(line)[0]
 
 
 def find_name_comment_in_block(l_string, block_name):

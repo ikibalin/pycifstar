@@ -112,8 +112,7 @@ class Items(object):
             str_1 = "_"+str_1
         for item in self.items:
             if item.name == str_1:
-                res = item
-                break
+                return item  # the tag itself: no search of a prefix
         l_res = self.items_with_prefix(str_1)
         if ((res is None) & (len(l_res) > 0)):
             res = l_res
