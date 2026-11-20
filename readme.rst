@@ -289,10 +289,13 @@ text with the new pycifstar as with the one of ``master``):
 >>> python -m pip install -e .[test]
 >>> python -m pytest test
 
-Release: set ``version`` in ``setup.py``, merge into ``master``, then
-publish a GitHub release whose tag is that version (e.g. ``0.3.1``). The
-workflow ``publish-pypi.yml`` runs the tests, builds the package and
-publishes it to PyPI.
+Release: every pull request gets a ``[scope]`` label (``bug``,
+``enhancement``, ``maintenance``, ``documentation``, ``significant``).
+After each merge into ``master`` the workflow ``release-notes.yml``
+updates a draft GitHub release whose version is computed from these
+labels. Publishing the draft creates the tag (the version of the package,
+via ``versioningit``), and ``publish-pypi.yml`` runs the tests, builds
+the package and publishes it to PyPI.
 
 Copyright and License
 -------------------------

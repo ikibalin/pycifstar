@@ -1,3 +1,40 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77", "versioningit>=3"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pycifstar"
+dynamic = ["version"]
+description = "PyCifStar is a class library for data manipulation provided in the CIF/STAR File."
+readme = {file = "readme.rst", content-type = "text/x-rst"}
+authors = [{name = "Iurii Kibalin", email = "yurikibalin@outlook.com"}]
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["STAR", "CIF"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/ikibalin/pycifstar"
+"Issue Tracker" = "https://github.com/ikibalin/pycifstar/issues"
+
+[tool.setuptools.packages.find]
+include = ["pycifstar", "pycifstar.*"]
+
+# The version comes from git tags (plain, e.g. 0.3.2), as in CrysPy and
+# CrysPy Editor: publishing the draft release creates the tag.
+[tool.versioningit.vcs]
+method = "git"
+default-tag = "0.3.1"
+
+[tool.versioningit.format]
+distance = "{base_version}.post{distance}"
+dirty = "{base_version}.post{distance}"
+distance-dirty = "{base_version}.post{distance}"

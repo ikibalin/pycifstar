@@ -1,6 +1,6 @@
 # Build the package and publish it to PyPI when a GitHub release is
-# published. The release tag must be the version of setup.py (e.g.
-# 0.3.1 or v0.3.1).
+# published (the draft made by release-notes.yml). The version comes from
+# the tag of the release (versioningit).
 #
 # Trusted Publishing: PyPI accepts the short-lived OIDC token of this job
 # instead of a stored API token. Once, on pypi.org: pycifstar → Manage →
@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # tags for versioningit
 
       - name: Set up Python
         uses: actions/setup-python@v6
