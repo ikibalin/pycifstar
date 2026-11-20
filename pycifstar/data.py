@@ -235,11 +235,12 @@ class Data(object):
         l_string_loop = []
         for line in l_string[(i_data+1):]:
             str_1 = line.strip()
-            cond_1 = any([str_1.lower().startswith(key_word) for key_word in ["data_", "global_"]])
+            start_1 = str_1[:7].lower()
+            cond_1 = start_1.startswith(("data_", "global_"))
             cond_2 = (str_1 == "")
-            cond_3 = str_1.lower().startswith("loop_")
-            cond_4 = str_1.lower().startswith("_")
-            cond_5 = str_1.lower().startswith("#")
+            cond_3 = start_1.startswith("loop_")
+            cond_4 = str_1.startswith("_")
+            cond_5 = str_1.startswith("#")
             if cond_1:
                 break
             elif cond_2:
