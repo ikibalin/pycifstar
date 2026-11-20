@@ -1,0 +1,29 @@
+# Require every pull request to carry at least one [scope] label: the
+# release draft computes the next version from them.
+
+name: PR labels check
+
+on:
+  pull_request_target:
+    types: [opened, labeled, unlabeled, synchronize]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mheap/github-action-required-labels@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add_comment: true
+          mode: minimum
+          count: 1
+          labels: |
+            [scope] bug
+            [scope] documentation
+            [scope] enhancement
+            [scope] maintenance
+            [scope] significant
